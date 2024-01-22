@@ -63,7 +63,7 @@ char *get_next_line(int fd)
     return line;
 }
 
-int main()
+/*int main()
 {
     int fd = open("test_file.txt", O_RDONLY); // Remplacez "test.txt" par le chemin vers votre fichier de test
 
@@ -98,4 +98,4 @@ int main()
     close(fd);
 
     return 0;
-}
+}*/
