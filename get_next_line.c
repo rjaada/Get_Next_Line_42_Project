@@ -1,31 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rjaada <rjaada@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/24 02:16:39 by rjaada            #+#    #+#             */
+/*   Updated: 2024/01/24 03:18:47 by rjaada           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 1024
+# define BUFFER_SIZE 1024
 #endif
 
-char *get_next_line(int fd) {
-    static char buffer[BUFFER_SIZE];
-    static int buffer_index = 0, buffer_size = 0;
-    char *line = NULL;
-    int line_index = 0;
-    char c;
+char	*get_next_line(int fd)
+{
+	char		*line;
+	int			line_index;
+	static char	buffer[BUFFER_SIZE];
+	static int	buffer_index = 0, buffer_size = 0;
+	char		c;
 
-    while ((c = get_next_char(fd, buffer, &buffer_index, &buffer_size)) != '\0') {
-        line = construct_line(line, c, &line_index);
-        if (line == NULL || c == '\n') break;
-    }
-
-    if (buffer_size == 0 && (line == NULL || line_index == 0)) {
-        free(line);
-        return NULL;
-    }
-    return line;
+	line = NULL;
+	line_index = 0;
+	while (1)
+	{
+		c = get_next_char(fd, buffer, &buffer_index, &buffer_size);
+		if (c == '\0')
+			break ;
+		line = construct_line(line, c, &line_index);
+		if (line == NULL || c == '\n')
+			break ;
+	}
+	if (buffer_size == 0 && (line == NULL || line_index == 0))
+	{
+		free(line);
+		return (NULL);
+	}
+	return (line);
 }
 
-int main()
+/*int	main(void)
 {
-    int fd = open("test_file.txt", O_RDONLY); // Remplacez "test.txt" par le chemin vers votre fichier de test
+    int fd = open("test_file.txt", O_RDONLY);
 
     if (fd == -1)
     {
@@ -58,4 +78,4 @@ int main()
     close(fd);
 
     return 0;
-}
+}*/
