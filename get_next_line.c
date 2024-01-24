@@ -1,69 +1,29 @@
-#include <stdio.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include "get_next_line.h"
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 10
+#define BUFFER_SIZE 1024
 #endif
 
-char *get_next_line(int fd)
-{    
+char *get_next_line(int fd) {
     static char buffer[BUFFER_SIZE];
-    static int buffer_index = 0;
-    static int buffer_size = 0;
-
+    static int buffer_index = 0, buffer_size = 0;
     char *line = NULL;
     int line_index = 0;
     char c;
 
-    while (1)
-    {
-        // Check if buffer is empty, read more data if needed
-        if (buffer_index >= buffer_size)
-        {
-            buffer_size = read(fd, buffer, BUFFER_SIZE);
-            buffer_index = 0;
-
-            if (buffer_size <= 0)
-                break;
-        }
-
-        c = buffer[buffer_index++];
-        
-        // Check for end of line
-        if (c == '\n')
-            break;
-
-        // Reallocate memory if line exceeds BUFFER_SIZE
-        if (line_index % BUFFER_SIZE == 0)
-        {
-            char *new_line = realloc(line, (line_index + BUFFER_SIZE) * sizeof(char));
-            if (new_line == NULL)
-            {
-                free(line);
-                return NULL;
-            }
-            line = new_line;
-        }
-
-        line[line_index++] = c;
+    while ((c = get_next_char(fd, buffer, &buffer_index, &buffer_size)) != '\0') {
+        line = construct_line(line, c, &line_index);
+        if (line == NULL || c == '\n') break;
     }
 
-    // Handle end-of-file (EOF)
-    if (buffer_size == 0 && line_index == 0)
-    {
+    if (buffer_size == 0 && (line == NULL || line_index == 0)) {
         free(line);
         return NULL;
     }
-
-    // Null-terminate the line
-    line[line_index] = '\0';
-
     return line;
 }
 
-/*int main()
+int main()
 {
     int fd = open("test_file.txt", O_RDONLY); // Remplacez "test.txt" par le chemin vers votre fichier de test
 
@@ -98,4 +58,4 @@ char *get_next_line(int fd)
     close(fd);
 
     return 0;
-}*/
+}
