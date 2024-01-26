@@ -6,7 +6,7 @@
 /*   By: rjaada <rjaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 02:42:29 by rjaada            #+#    #+#             */
-/*   Updated: 2024/01/24 05:33:00 by rjaada           ###   ########.fr       */
+/*   Updated: 2024/01/26 04:28:31 by rjaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (p);
 }
 
-char	*get_line(char *text)
+char	*ft_get_line(char *text)
 {
 	char	*line;
 	size_t	len;
@@ -85,7 +85,7 @@ char	*get_line(char *text)
 		len++;
 	line = (char *)malloc(len + 1);
 	if (!line)
-		return (0);
+		return (NULL);
 	while (j < len)
 	{
 		line[j] = text[j];

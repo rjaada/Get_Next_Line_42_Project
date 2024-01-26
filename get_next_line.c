@@ -6,7 +6,7 @@
 /*   By: rjaada <rjaada@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 02:16:39 by rjaada            #+#    #+#             */
-/*   Updated: 2024/01/24 05:33:35 by rjaada           ###   ########.fr       */
+/*   Updated: 2024/01/26 04:28:29 by rjaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,15 @@ char	*read_all(int fd, char *text)
 		if (i == -1)
 		{
 			free(line);
+			free(text);
 			return (NULL);
 		}
 		line[i] = '\0';
 		text = ft_strjoin(text, line);
+		if (!text)
+		{
+			return (NULL);
+		}
 	}
 	free(line);
 	return (text);
@@ -55,10 +60,10 @@ char	*new_txt(char *text)
 		free(text);
 		return (NULL);
 	}
-	newtxt = (char *)malloc(ft_strlen(text) - k + 1);
+	newtxt = (char *)malloc(ft_strlen(text) - k);
 	if (!newtxt)
 		return (0);
-	while (text[k++])
+	while (text[++k])
 		newtxt[i++] = text[k];
 	newtxt[i] = '\0';
 	free(text);
@@ -67,7 +72,7 @@ char	*new_txt(char *text)
 
 char	*get_next_line(int fd)
 {
-	static char	*text;
+	static char	*text = NULL;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
@@ -75,7 +80,7 @@ char	*get_next_line(int fd)
 	text = read_all(fd, text);
 	if (!text)
 		return (NULL);
-	line = get_line(text);
+	line = ft_get_line(text);
 	text = new_txt(text);
 	return (line);
 }
