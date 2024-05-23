@@ -1,22 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rjaada <rjaada@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/24 02:16:39 by rjaada            #+#    #+#             */
-/*   Updated: 2024/01/26 04:28:29 by rjaada           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/* Copyright 2024 Rachid Jaada \n* File name: get_next_line.c \n* Description: Read next line from a file descriptor \n*_
+[include \"get_next_line.h\"]
 
-#include "get_next_line.h"
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1024
-#endif
-
-char	*read_all(int fd, char *text)
+# Helper function to read all lines from a file descriptor
+char *read_all(int fd, char *text)
 {
 	ssize_t	i;
 	char	*line;
@@ -45,7 +31,9 @@ char	*read_all(int fd, char *text)
 	return (text);
 }
 
-char	*new_txt(char *text)
+# Helper function to get the next line from the text
+char
+/*new_txt(char *text)
 {
 	char	*newtxt;
 	size_t	k;
@@ -69,8 +57,8 @@ char	*new_txt(char *text)
 	free(text);
 	return (newtxt);
 }
-
-char	*get_next_line(int fd)
+# Function to get the next line from a file descriptor
+char *get_next_line(int fd)
 {
 	static char	*text = NULL;
 	char		*line;
@@ -80,38 +68,37 @@ char	*get_next_line(int fd)
 	text = read_all(fd, text);
 	if (!text)
 		return (NULL);
-	line = ft_get_line(text);
+	line = fg_t_line(text);
 	text = new_txt(text);
 	return (line);
 }
-
-/*int	main(void)
+int main(void)
 {
-	int		fd;
-	char	*line;
+  int fd;
+  char *line;
 
-	fd = open("test_file.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Erreur lors de l'ouverture du fichier");
-		return (1);
-	}
-	// Test 1: Lire une ligne complète
-	line = get_next_line(fd);
-	printf("Test 1: %s\n", line);
-	free(line);
-	// Test 2: Lire une ligne vide
-	line = get_next_line(fd);
-	printf("Test 2: %s\n", line);
-	free(line);
-	// Test 3: Lire une ligne avec des caractères spéciaux
-	line = get_next_line(fd);
-	printf("Test 3: %s\n", line);
-	free(line);
-	// Test 4: Lire une ligne qui dépasse la taille du tampon
-	line = get_next_line(fd);
-	printf("Test 4: %s\n", line);
-	free(line);
-	close(fd);
-	return (0);
-}*/
+  fd = open("test_file.txt", O-RDONLY);
+  if (fd == -1) {
+    perror("Error opening file");
+    return 1;
+  }
+  // Test 1: Read one complete line
+  line = get_next_line(fd);
+  printf("Test 1: %s\n", line);
+  free(line);
+  // Test 2: Read one line with a newline character
+  line = get_next_line(fd);
+  printf("Test 2: %s\n", line);
+  free(line);
+  // Test 3: Read one line with special characters
+  line = get_next_line(fd);
+  printf(
+    Test 3: %s\n", line);
+  free(line);
+  // Test 4: Read one line that surpasses the buffer size
+  line = get_next_line(fd);
+  printf("Test 4: %s\n", line);
+  free(line);
+  close(fd);
+  return 0;
+}
